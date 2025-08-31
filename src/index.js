@@ -39,9 +39,10 @@ export default {
 			const timestamp = new Date().toISOString();
 
 			// Format the message with request information
-			const mapLink = (latitude !== 'Unknown' && longitude !== 'Unknown') 
+			const hasCoordinates = latitude !== 'Unknown' && longitude !== 'Unknown';
+			const mapLink = hasCoordinates 
 				? `https://www.google.com/maps?q=${latitude},${longitude}`
-				: 'Unknown';
+				: null;
 
 			const requestInfo = `URL: ${url}
 IP: ${clientIP}
@@ -49,7 +50,7 @@ Browser: ${userAgent}
 Country: ${country}
 Region: ${region}
 City: ${city}
-Coordinates: ${latitude}, ${longitude} (${mapLink})
+Coordinates: ${latitude}, ${longitude}
 Timezone: ${timezone}
 Timestamp: ${timestamp}
 Original text:`;
@@ -57,7 +58,7 @@ Original text:`;
 			const formattedMessage = `<code>
 ${requestInfo}
 </code>
-${text}`;
+${mapLink ? `<a href="${mapLink}">📍 View Location on Map</a>\n\n` : ''}${text}`;
 
 			const telegramToken = env.TELEGRAM_TOKEN;
 			const telegramChatId = env.TELEGRAM_CHAT_ID;
@@ -85,9 +86,7 @@ ${text}`;
 
 			if (!telegramResponse.ok) {
 				return new Response(JSON.stringify({
-					success: false,
-					error: 'Telegram API error',
-					details: telegramResult
+					success: false
 				}), { 
 					status: 500,
 					headers: { 'Content-Type': 'application/json' }
@@ -95,18 +94,14 @@ ${text}`;
 			}
 
 			return new Response(JSON.stringify({
-				success: true,
-				message: 'Message sent successfully',
-				telegram_response: telegramResult
+				success: true
 			}), {
 				headers: { 'Content-Type': 'application/json' }
 			});
 
 		} catch (error) {
 			return new Response(JSON.stringify({
-				success: false,
-				error: 'Internal server error',
-				details: error.message
+				success: false
 			}), { 
 				status: 500,
 				headers: { 'Content-Type': 'application/json' }
