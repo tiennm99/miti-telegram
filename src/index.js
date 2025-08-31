@@ -32,74 +32,25 @@ export default {
 			const country = request.cf?.country || 'Unknown';
 			const city = request.cf?.city || 'Unknown';
 			const region = request.cf?.region || 'Unknown';
-			const regionCode = request.cf?.regionCode || 'Unknown';
-			const postalCode = request.cf?.postalCode || 'Unknown';
-			const metroCode = request.cf?.metroCode || 'Unknown';
 			const latitude = request.cf?.latitude || 'Unknown';
 			const longitude = request.cf?.longitude || 'Unknown';
 			const timezone = request.cf?.timezone || 'Unknown';
-			const continent = request.cf?.continent || 'Unknown';
-			const asn = request.cf?.asn || 'Unknown';
-			const asOrganization = request.cf?.asOrganization || 'Unknown';
-			const colo = request.cf?.colo || 'Unknown';
-			const httpVersion = request.cf?.httpProtocol || 'Unknown';
-			const tlsVersion = request.cf?.tlsVersion || 'Unknown';
-			const tlsCipher = request.cf?.tlsCipher || 'Unknown';
-			const edgeRequestKeepAlive = request.cf?.edgeRequestKeepAlive || 'Unknown';
-			const clientTrustScore = request.cf?.clientTrustScore || 'Unknown';
-			const botManagement = request.cf?.botManagement?.score || 'Unknown';
-			const referer = request.headers.get('Referer') || 'None';
-			const origin = request.headers.get('Origin') || 'None';
-			const acceptLanguage = request.headers.get('Accept-Language') || 'Unknown';
-			const acceptEncoding = request.headers.get('Accept-Encoding') || 'Unknown';
-			const accept = request.headers.get('Accept') || 'Unknown';
-			const host = request.headers.get('Host') || 'Unknown';
-			const xRequestedWith = request.headers.get('X-Requested-With') || 'None';
-			const dnt = request.headers.get('DNT') || 'None';
-			const secFetchSite = request.headers.get('Sec-Fetch-Site') || 'Unknown';
-			const secFetchMode = request.headers.get('Sec-Fetch-Mode') || 'Unknown';
-			const secFetchDest = request.headers.get('Sec-Fetch-Dest') || 'Unknown';
-			const secChUa = request.headers.get('Sec-CH-UA') || 'Unknown';
-			const secChUaPlatform = request.headers.get('Sec-CH-UA-Platform') || 'Unknown';
-			const secChUaMobile = request.headers.get('Sec-CH-UA-Mobile') || 'Unknown';
-			const method = request.method || 'Unknown';
 			const url = request.url || 'Unknown';
 			const timestamp = new Date().toISOString();
 
 			// Format the message with request information
-			const requestInfo = `Method: ${method}
-URL: ${url}
+			const mapLink = (latitude !== 'Unknown' && longitude !== 'Unknown') 
+				? `https://www.google.com/maps?q=${latitude},${longitude}`
+				: 'Unknown';
+
+			const requestInfo = `URL: ${url}
 IP: ${clientIP}
 Browser: ${userAgent}
-Country: ${country} (${continent})
-Region: ${region} (${regionCode})
+Country: ${country}
+Region: ${region}
 City: ${city}
-Postal Code: ${postalCode}
-Metro Code: ${metroCode}
-Coordinates: ${latitude}, ${longitude}
+Coordinates: ${latitude}, ${longitude} (${mapLink})
 Timezone: ${timezone}
-ASN: ${asn} (${asOrganization})
-Cloudflare Datacenter: ${colo}
-HTTP Version: ${httpVersion}
-TLS Version: ${tlsVersion}
-TLS Cipher: ${tlsCipher}
-Keep-Alive: ${edgeRequestKeepAlive}
-Trust Score: ${clientTrustScore}
-Bot Score: ${botManagement}
-Host: ${host}
-Referer: ${referer}
-Origin: ${origin}
-Accept: ${accept}
-Accept-Language: ${acceptLanguage}
-Accept-Encoding: ${acceptEncoding}
-X-Requested-With: ${xRequestedWith}
-DNT: ${dnt}
-Sec-Fetch-Site: ${secFetchSite}
-Sec-Fetch-Mode: ${secFetchMode}
-Sec-Fetch-Dest: ${secFetchDest}
-Sec-CH-UA: ${secChUa}
-Sec-CH-UA-Platform: ${secChUaPlatform}
-Sec-CH-UA-Mobile: ${secChUaMobile}
 Timestamp: ${timestamp}
 Original text:`;
 
