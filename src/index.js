@@ -44,7 +44,7 @@ export default {
 				? `https://www.google.com/maps?q=${latitude},${longitude}`
 				: null;
 
-			const requestInfo = `<b>IP</b>: <code>${clientIP}</code>
+			const requestInfo = `<b>IP</b>: <code>${clientIP}</code> <a href="https://ipinfo.io/${clientIP}">🔍</a>
 <b>Browser</b>: <code>${userAgent}</code>
 <b>Country</b>: <code>${country}</code>
 <b>Region</b>: <code>${region}</code>
