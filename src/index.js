@@ -23,11 +23,11 @@ export default {
 			}
 
 			// Collect client request information
-			const clientIP = request.headers.get('CF-Connecting-IP') || 
-							request.headers.get('X-Forwarded-For') || 
-							request.headers.get('X-Real-IP') || 
+			const clientIP = request.headers.get('CF-Connecting-IP') ||
+							request.headers.get('X-Forwarded-For') ||
+							request.headers.get('X-Real-IP') ||
 							'Unknown';
-			
+
 			const userAgent = request.headers.get('User-Agent') || 'Unknown';
 			const country = request.cf?.country || 'Unknown';
 			const city = request.cf?.city || 'Unknown';
@@ -40,25 +40,23 @@ export default {
 
 			// Format the message with request information
 			const hasCoordinates = latitude !== 'Unknown' && longitude !== 'Unknown';
-			const mapLink = hasCoordinates 
+			const mapLink = hasCoordinates
 				? `https://www.google.com/maps?q=${latitude},${longitude}`
 				: null;
 
-			const requestInfo = `URL: ${url}
-IP: ${clientIP}
-Browser: ${userAgent}
-Country: ${country}
-Region: ${region}
-City: ${city}
-Coordinates: ${latitude}, ${longitude}
-Timezone: ${timezone}
-Timestamp: ${timestamp}
-Original text:`;
+			const requestInfo = `<b>IP</b>: <code>${clientIP}</code>
+<b>Browser</b>: <code>${userAgent}</code>
+<b>Country</b>: <code>${country}</code>
+<b>Region</b>: <code>${region}</code>
+<b>City</b>: <code>${city}</code>
+<b>Coordinates</b>: <code>${latitude}, ${longitude}</code>${mapLink ? ` <a href="${mapLink}">📍</a>` : ''}
+<b>Timezone</b>: <code>${timezone}</code>
+<b>Timestamp</b>: <code>${timestamp}</code>
+<b>Original text</b>:`;
 
-			const formattedMessage = `<code>
-${requestInfo}
-</code>
-${mapLink ? `<a href="${mapLink}">📍 View Location on Map</a>\n\n` : ''}${text}`;
+			const formattedMessage = `${requestInfo}
+
+${text}`;
 
 			const telegramToken = env.TELEGRAM_TOKEN;
 			const telegramChatId = env.TELEGRAM_CHAT_ID;
@@ -87,7 +85,7 @@ ${mapLink ? `<a href="${mapLink}">📍 View Location on Map</a>\n\n` : ''}${text
 			if (!telegramResponse.ok) {
 				return new Response(JSON.stringify({
 					success: false
-				}), { 
+				}), {
 					status: 500,
 					headers: { 'Content-Type': 'application/json' }
 				});
@@ -102,7 +100,7 @@ ${mapLink ? `<a href="${mapLink}">📍 View Location on Map</a>\n\n` : ''}${text
 		} catch (error) {
 			return new Response(JSON.stringify({
 				success: false
-			}), { 
+			}), {
 				status: 500,
 				headers: { 'Content-Type': 'application/json' }
 			});
