@@ -1,7 +1,25 @@
 export default {
 	async fetch(request, env, ctx) {
+		// Handle CORS preflight requests
+		if (request.method === 'OPTIONS') {
+			return new Response(null, {
+				status: 204,
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'POST, OPTIONS',
+					'Access-Control-Allow-Headers': 'Content-Type',
+					'Access-Control-Max-Age': '86400',
+				},
+			});
+		}
+
 		if (request.method !== 'POST') {
-			return new Response('Method not allowed', { status: 405 });
+			return new Response('Method not allowed', { 
+				status: 405,
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+				}
+			});
 		}
 
 		try {
@@ -15,11 +33,21 @@ export default {
 				const formData = await request.formData();
 				text = formData.get('text');
 			} else {
-				return new Response('Content-Type must be application/json or application/x-www-form-urlencoded', { status: 400 });
+				return new Response('Content-Type must be application/json or application/x-www-form-urlencoded', { 
+					status: 400,
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+					}
+				});
 			}
 
 			if (!text) {
-				return new Response('Missing text parameter', { status: 400 });
+				return new Response('Missing text parameter', { 
+					status: 400,
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+					}
+				});
 			}
 
 			// Collect client request information
@@ -62,7 +90,12 @@ ${text}`;
 			const telegramChatId = env.TELEGRAM_CHAT_ID;
 
 			if (!telegramToken || !telegramChatId) {
-				return new Response('Missing TELEGRAM_TOKEN or TELEGRAM_CHAT_ID environment variables', { status: 500 });
+				return new Response('Missing TELEGRAM_TOKEN or TELEGRAM_CHAT_ID environment variables', { 
+					status: 500,
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+					}
+				});
 			}
 
 			const telegramUrl = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
@@ -87,14 +120,20 @@ ${text}`;
 					success: false
 				}), {
 					status: 500,
-					headers: { 'Content-Type': 'application/json' }
+					headers: { 
+						'Content-Type': 'application/json',
+						'Access-Control-Allow-Origin': '*',
+					}
 				});
 			}
 
 			return new Response(JSON.stringify({
 				success: true
 			}), {
-				headers: { 'Content-Type': 'application/json' }
+				headers: { 
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				}
 			});
 
 		} catch (error) {
@@ -102,7 +141,10 @@ ${text}`;
 				success: false
 			}), {
 				status: 500,
-				headers: { 'Content-Type': 'application/json' }
+				headers: { 
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				}
 			});
 		}
 	},
