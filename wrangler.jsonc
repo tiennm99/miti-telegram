@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "miti-telegram",
+	"name": "mitigram",
 	"main": "src/index.js",
 	"compatibility_date": "2025-08-31",
 	"observability": {
