@@ -50,42 +50,6 @@ export default {
         });
       }
 
-      // Collect client request information
-      const clientIP = request.headers.get('CF-Connecting-IP') ||
-        request.headers.get('X-Forwarded-For') ||
-        request.headers.get('X-Real-IP') ||
-        'Unknown';
-
-      const userAgent = request.headers.get('User-Agent') || 'Unknown';
-      const country = request.cf?.country || 'Unknown';
-      const city = request.cf?.city || 'Unknown';
-      const region = request.cf?.region || 'Unknown';
-      const latitude = request.cf?.latitude || 'Unknown';
-      const longitude = request.cf?.longitude || 'Unknown';
-      const timezone = request.cf?.timezone || 'Unknown';
-      const url = request.url || 'Unknown';
-      const timestamp = new Date().toISOString();
-
-      // Format the message with request information
-      const hasCoordinates = latitude !== 'Unknown' && longitude !== 'Unknown';
-      const mapLink = hasCoordinates
-        ? `https://www.google.com/maps?q=${latitude},${longitude}`
-        : null;
-
-      const requestInfo = `<b>IP</b>: <code>${clientIP}</code> <a href="https://ipinfo.io/${clientIP}">🔍</a>
-<b>Browser</b>: <code>${userAgent}</code>
-<b>Country</b>: <code>${country}</code>
-<b>Region</b>: <code>${region}</code>
-<b>City</b>: <code>${city}</code>
-<b>Coordinates</b>: <code>${latitude}, ${longitude}</code>${mapLink ? ` <a href="${mapLink}">📍</a>` : ''}
-<b>Timezone</b>: <code>${timezone}</code>
-<b>Timestamp</b>: <code>${timestamp}</code>
-<b>Original text</b>:`;
-
-      const formattedMessage = `${requestInfo}
-
-${text}`;
-
       const telegramToken = env.TELEGRAM_TOKEN;
       const telegramChatId = env.TELEGRAM_CHAT_ID;
 
@@ -101,8 +65,7 @@ ${text}`;
       const telegramUrl = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
       const telegramPayload = {
         chat_id: telegramChatId,
-        text: formattedMessage,
-        parse_mode: 'HTML'
+        text,
       };
 
       const telegramResponse = await fetch(telegramUrl, {

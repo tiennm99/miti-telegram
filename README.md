@@ -14,7 +14,7 @@ curl -X POST https://miti-telegram.miti99.workers.dev/ \
 
 `application/x-www-form-urlencoded` (`text=...`) is also accepted. Responses are CORS-permissive (`Access-Control-Allow-Origin: *`).
 
-The worker prepends request metadata (IP, geo, UA, timestamp) to every message before forwarding to Telegram — that's expected, not an info leak (it's *your* Telegram).
+The worker forwards `text` to Telegram as-is (no prepended metadata). For request enrichment (IP, UA, geo, etc.) use [miti-loki](https://github.com/tiennm99/miti-loki) instead.
 
 ### For AI agents / Claude Code routines
 
