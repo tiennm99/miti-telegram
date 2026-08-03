@@ -1,0 +1,18 @@
+# Dependencies (pnpm-lock.yaml stays tracked)
+node_modules/
+
+# Wrangler build cache and local dev state
+.wrangler/
+
+# Secrets. .dev.vars holds TELEGRAM_TOKEN / TELEGRAM_CHAT_ID for `wrangler dev`.
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+
+# Logs
+*.log
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
