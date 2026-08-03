@@ -18,6 +18,8 @@ The worker forwards `text` to Telegram as-is (no prepended metadata). For reques
 
 ### For AI agents / Claude Code routines
 
+Machine-readable usage spec: [`llms.txt`](llms.txt), served at `GET https://miti-telegram.miti99.workers.dev/llms.txt`. It is the only GET route; every other GET returns 405, so no crawler or link preview can trigger a message.
+
 Read this section first, do not probe.
 
 - **One POST per intended message.** Do not send a `"test"` payload to verify the endpoint — every successful POST forwards to Telegram, so probes spam the inbox.

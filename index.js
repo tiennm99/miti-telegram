@@ -1,3 +1,5 @@
+import LLMS_TXT from './llms.txt';
+
 export default {
   async fetch(request, env, ctx) {
     // Handle CORS preflight requests
@@ -6,11 +8,27 @@ export default {
         status: 204,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
           'Access-Control-Max-Age': '86400',
         },
       });
+    }
+
+    // Usage spec for AI agents. Read-only: GET never forwards to Telegram,
+    // so crawlers and link previewers cannot trigger a message.
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      const { pathname } = new URL(request.url);
+
+      if (pathname === '/llms.txt') {
+        return new Response(request.method === 'HEAD' ? null : LLMS_TXT, {
+          headers: {
+            'Content-Type': 'text/plain; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600',
+            'Access-Control-Allow-Origin': '*',
+          },
+        });
+      }
     }
 
     if (request.method !== 'POST') {

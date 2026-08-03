@@ -1,0 +1,20 @@
+# miti-telegram
+
+> Cloudflare Worker that forwards a text message to Miti's Telegram inbox. Messages are sent with POST; there is no GET send endpoint.
+
+Send a message:
+
+```
+POST https://miti-telegram.miti99.workers.dev/
+Content-Type: application/json
+
+{"text": "<your message>"}
+```
+
+`application/x-www-form-urlencoded` with `text=<your message>` is also accepted.
+
+Responses: `{"success":true}` on success. `400` — missing `text`, or unsupported `Content-Type`. `405` — any method other than POST or OPTIONS; GET reaches only `/llms.txt` and cannot send. `500` — worker misconfiguration, not caller-fixable.
+
+## Optional
+
+- [Full rules for agents](https://github.com/tiennm99/miti-telegram#for-ai-agents--claude-code-routines): one POST per intended message, never probe the endpoint, never retry on 2xx.
