@@ -1,4 +1,4 @@
-# Dependencies (pnpm-lock.yaml stays tracked)
+# Dependencies (package-lock.json stays tracked)
 node_modules/
 
 # Wrangler build cache and local dev state
