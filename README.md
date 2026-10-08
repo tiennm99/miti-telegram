@@ -4,10 +4,10 @@ A Cloudflare Worker that forward message to [My Telegram](http://t.me/tiennm5)
 
 ## Usage
 
-POST a JSON body to `https://miti-telegram.miti99.workers.dev/` with a `text` field. Any other method returns 405; missing/empty `text` returns 400.
+POST a JSON body to `https://miti-telegram.tiennm99.workers.dev/` with a `text` field. Any other method returns 405; missing/empty `text` returns 400.
 
 ```bash
-curl -X POST https://miti-telegram.miti99.workers.dev/ \
+curl -X POST https://miti-telegram.tiennm99.workers.dev/ \
   -H 'Content-Type: application/json' \
   -d '{"text": "Hello from miti-telegram"}'
 ```
@@ -18,14 +18,14 @@ The worker forwards `text` to Telegram as-is (no prepended metadata). For reques
 
 ### For AI agents / Claude Code routines
 
-Machine-readable usage spec: [`llms.txt`](llms.txt), served at `GET https://miti-telegram.miti99.workers.dev/llms.txt`. It is the only GET route; every other GET returns 405, so no crawler or link preview can trigger a message.
+Machine-readable usage spec: [`llms.txt`](llms.txt), served at `GET https://miti-telegram.tiennm99.workers.dev/llms.txt`. It is the only GET route; every other GET returns 405, so no crawler or link preview can trigger a message.
 
 Read this section first, do not probe.
 
 - **One POST per intended message.** Do not send a `"test"` payload to verify the endpoint — every successful POST forwards to Telegram, so probes spam the inbox.
 - **Exact request:**
   ```
-  POST https://miti-telegram.miti99.workers.dev/
+  POST https://miti-telegram.tiennm99.workers.dev/
   Content-Type: application/json
   {"text": "<your message>"}
   ```

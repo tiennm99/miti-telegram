@@ -5,7 +5,7 @@
 Send a message:
 
 ```
-POST https://miti-telegram.miti99.workers.dev/
+POST https://miti-telegram.tiennm99.workers.dev/
 Content-Type: application/json
 
 {"text": "<your message>"}
